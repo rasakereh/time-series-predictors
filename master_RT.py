@@ -125,9 +125,10 @@ methods = {
 }
 
 print('Preparing dataset...')
-dataDir = '../data/DrFazli/preprocessed'
-dataFiles = {f: join(dataDir, f)  for f in listdir(dataDir) if isfile(join(dataDir, f)) and f[-4:] == '.csv' and f not in ['stock_metadata.csv', 'NIFTY50_all.csv']}
-print(list(dataFiles.keys()))
+dataDir = '../data/DrFazli/preprocessed_RT'
+file_name = '25336820825905643.csv'
+dataFiles = {f: join(dataDir, f)  for f in [file_name] if isfile(join(dataDir, f)) and f[-4:] == '.csv' and f not in ['stock_metadata.csv', 'NIFTY50_all.csv']}
+# print(list(dataFiles.keys()))
 priceIndices = {f: pd.read_csv(dataFiles[f]) for f in dataFiles}
 
 # dataFiles = {'dummy1': 1, 'dummy2': 1, 'dummy3': 1, 'dummy4': 1, 'dummy5': 1, 'dummy6': 1}
@@ -154,6 +155,7 @@ for cryptoID in priceIndices:
     priceIndices[cryptoID]["Date"] = priceIndices[cryptoID]["Date"].astype("datetime64[ns]")
     priceIndices[cryptoID] = priceIndices[cryptoID] >> arrange(X.Date)
     indexLength = priceIndices[cryptoID].shape[0]
+    print('============%d================'%indexLength)
     indexMean = mean(priceIndices[cryptoID]["Price"].values)
     prices[cryptoID] = priceIndices[cryptoID]["Price"].values + np.random.normal(loc=0, scale=indexMean/500, size=indexLength)
     intervalLength = min(indexLength, intervalLength)
@@ -181,7 +183,7 @@ wrongs = lambda truth, estimate, prices: np.sqrt(np.mean(np.heaviside(-(truth - 
 # DMSESD = lambda truth, estimate, prices: np.sqrt(np.std((np.heaviside(-(truth - prices[:,-1])*(estimate - prices[:,-1]), [0]) * (truth-estimate)/truth)**2))
 # DMSE = lambda truth, estimate, prices: print(*[truth, estimate, prices], sep='\n')
 
-methods['MondrianForest']['later_values'] = {'X': pricePartitions['test'], 'f': trueVals}
+# methods['MondrianForest']['later_values'] = {'X': pricePartitions['test'], 'f': trueVals}
 import json
 for method_name in methods:
     print("==================== %s ===================="%(method_name))
@@ -221,10 +223,10 @@ for method_name in methods:
     
     print('saving dump...')
     currentTime = datetime.datetime.now()
-    dump_file = open('dumps/Results-%s-%s.dmp'%(method_name, currentTime), 'w')
+    dump_file = open('dumps/Results-%s-%s_RT.dmp'%(method_name, currentTime), 'w')
     json.dump(res, dump_file, cls=NumpyEncoder)
     dump_file.close()
-    dump_file = open('dumps/Timing-%s-%s.txt'%(method_name, currentTime), 'w')
+    dump_file = open('dumps/Timing-%s-%s_RT.txt'%(method_name, currentTime), 'w')
     dump_file.write(timingString)
     dump_file.close()
     

@@ -1,6 +1,0 @@
-
-        learning time:	12224.2 ms
-        predicting time:	121.3 ms
-        prediction/test:	0.3 ms
-        total time:	12345.5ms
-    
