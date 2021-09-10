@@ -24,22 +24,23 @@ TRAIN_PORTION = .8
 DIM =  200
 # DIM = 15
 
+# Uncomment the method and its parameters to include the corresponding result
 methods = {
-    # 'GBLM': {
-    #     'class': GBLM,
-    #     'options': {
-    #         'dimension': DIM,
-    #         'epsilon': 5e-3,
-    #         'forgetting_rate': .59,
-    #         'p_learning_rate': .008,
-    #         's_learning_rate': .001,
-    #         'decay_rate': .25,
-    #         'oe_penalty': -1.5,
-    #         'ue_penalty': -1.5,
-    #         'reward': 1,
-    #         'epochs': 1
-    #     }
-    # },
+    'GBLM': {
+        'class': GBLM,
+        'options': {
+            'dimension': DIM,
+            'epsilon': 5e-3,
+            'forgetting_rate': .59,
+            'p_learning_rate': .008,
+            's_learning_rate': .001,
+            'decay_rate': .25,
+            'oe_penalty': -1.5,
+            'ue_penalty': -1.5,
+            'reward': 1,
+            'epochs': 1
+        }
+    },
     # 'MLShepard': {
     #     'class': MLShepard,
     #     'options': {
@@ -52,24 +53,24 @@ methods = {
     #         'epsilon': 1e-10
     #     }
     # },
-    'OARIMA (ogd)': {
-        'class': OARIMA,
-        'options': {
-            'dimension': DIM,
-            'lrate': 1e-2,
-            'epsilon': 1e-10,
-            'method': 'ogd'
-        }
-    },
-    'OARIMA (ons)': {
-        'class': OARIMA,
-        'options': {
-            'dimension': DIM,
-            'lrate': 1e-2,
-            'epsilon': 1e-10,
-            'method': 'ons'
-        }
-    },
+    # 'OARIMA (ogd)': {
+    #     'class': OARIMA,
+    #     'options': {
+    #         'dimension': DIM,
+    #         'lrate': 1e-2,
+    #         'epsilon': 1e-10,
+    #         'method': 'ogd'
+    #     }
+    # },
+    # 'OARIMA (ons)': {
+    #     'class': OARIMA,
+    #     'options': {
+    #         'dimension': DIM,
+    #         'lrate': 1e-2,
+    #         'epsilon': 1e-10,
+    #         'method': 'ons'
+    #     }
+    # },
     # 'OSVR': {
     #     'class': OSVR,
     #     'options': {
@@ -125,7 +126,8 @@ methods = {
 }
 
 print('Preparing dataset...')
-dataDir = '../data/DrFazli/preprocessed'
+# Here is the data directory. Each stock/crypto must be stored in a seperated csv file
+dataDir = 'data/stocks'
 dataFiles = {f: join(dataDir, f)  for f in listdir(dataDir) if isfile(join(dataDir, f)) and f[-4:] == '.csv' and f not in ['stock_metadata.csv', 'NIFTY50_all.csv']}
 print(list(dataFiles.keys()))
 priceIndices = {f: pd.read_csv(dataFiles[f]) for f in dataFiles}
@@ -181,7 +183,7 @@ wrongs = lambda truth, estimate, prices: np.sqrt(np.mean(np.heaviside(-(truth - 
 # DMSESD = lambda truth, estimate, prices: np.sqrt(np.std((np.heaviside(-(truth - prices[:,-1])*(estimate - prices[:,-1]), [0]) * (truth-estimate)/truth)**2))
 # DMSE = lambda truth, estimate, prices: print(*[truth, estimate, prices], sep='\n')
 
-methods['MondrianForest']['later_values'] = {'X': pricePartitions['test'], 'f': trueVals}
+# methods['MondrianForest']['later_values'] = {'X': pricePartitions['test'], 'f': trueVals}
 import json
 for method_name in methods:
     print("==================== %s ===================="%(method_name))

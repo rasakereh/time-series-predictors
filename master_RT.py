@@ -24,22 +24,23 @@ TRAIN_PORTION = .8
 DIM =  200
 # DIM = 15
 
+# Uncomment the method and its parameters to include the corresponding result
 methods = {
-    # 'GBLM': {
-    #     'class': GBLM,
-    #     'options': {
-    #         'dimension': DIM,
-    #         'epsilon': 5e-3,
-    #         'forgetting_rate': .59,
-    #         'p_learning_rate': .008,
-    #         's_learning_rate': .001,
-    #         'decay_rate': .25,
-    #         'oe_penalty': -1.5,
-    #         'ue_penalty': -1.5,
-    #         'reward': 1,
-    #         'epochs': 1
-    #     }
-    # },
+    'GBLM': {
+        'class': GBLM,
+        'options': {
+            'dimension': DIM,
+            'epsilon': 5e-3,
+            'forgetting_rate': .59,
+            'p_learning_rate': .008,
+            's_learning_rate': .001,
+            'decay_rate': .25,
+            'oe_penalty': -1.5,
+            'ue_penalty': -1.5,
+            'reward': 1,
+            'epochs': 1
+        }
+    },
     # 'MLShepard': {
     #     'class': MLShepard,
     #     'options': {
@@ -52,24 +53,24 @@ methods = {
     #         'epsilon': 1e-10
     #     }
     # },
-    'OARIMA (ogd)': {
-        'class': OARIMA,
-        'options': {
-            'dimension': DIM,
-            'lrate': 1e-2,
-            'epsilon': 1e-10,
-            'method': 'ogd'
-        }
-    },
-    'OARIMA (ons)': {
-        'class': OARIMA,
-        'options': {
-            'dimension': DIM,
-            'lrate': 1e-2,
-            'epsilon': 1e-10,
-            'method': 'ons'
-        }
-    },
+    # 'OARIMA (ogd)': {
+    #     'class': OARIMA,
+    #     'options': {
+    #         'dimension': DIM,
+    #         'lrate': 1e-2,
+    #         'epsilon': 1e-10,
+    #         'method': 'ogd'
+    #     }
+    # },
+    # 'OARIMA (ons)': {
+    #     'class': OARIMA,
+    #     'options': {
+    #         'dimension': DIM,
+    #         'lrate': 1e-2,
+    #         'epsilon': 1e-10,
+    #         'method': 'ons'
+    #     }
+    # },
     # 'OSVR': {
     #     'class': OSVR,
     #     'options': {
@@ -125,7 +126,8 @@ methods = {
 }
 
 print('Preparing dataset...')
-dataDir = '../data/DrFazli/preprocessed_RT'
+# Here is the data directory. Each stock/crypto must be stored in a seperated csv file
+dataDir = 'data/RTstocks'
 file_name = '25336820825905643.csv'
 dataFiles = {f: join(dataDir, f)  for f in [file_name] if isfile(join(dataDir, f)) and f[-4:] == '.csv' and f not in ['stock_metadata.csv', 'NIFTY50_all.csv']}
 # print(list(dataFiles.keys()))

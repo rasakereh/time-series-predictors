@@ -47,6 +47,7 @@ class GBLM:
                     reward = self.oe_penalty if diff > self.epsilon else self.ue_penalty if diff < -self.epsilon else self.reward
                     self.models[capital_name]['rlR'] = self.models[capital_name]['rlR']*self.decay_rate + reward
                     self.models[capital_name]['w'] = self.forgetting_rate*w + self.p_learning_rate*x*self.models[capital_name]['rlF']*self.models[capital_name]['rlR']
+                    self.models[capital_name]['w'] = self.models[capital_name]['w'] / np.sum(self.models[capital_name]['w'])
             
 
 
@@ -82,6 +83,7 @@ class GBLM:
                     reward = self.oe_penalty if diff > self.epsilon else self.ue_penalty if diff < -self.epsilon else self.reward
                     self.models[capital_name]['rlR'] = self.models[capital_name]['rlR']*self.decay_rate + reward
                     self.models[capital_name]['w'] = self.forgetting_rate*w + self.s_learning_rate*daily_changes*self.models[capital_name]['rlF']*self.models[capital_name]['rlR']
+                    self.models[capital_name]['w'] = self.models[capital_name]['w'] / np.sum(self.models[capital_name]['w'])
                     
                 row_number += 1
             
